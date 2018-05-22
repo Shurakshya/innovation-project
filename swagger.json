@@ -1,0 +1,153 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Posti SCS API",
+    "description": " # Welcome to the Posti API\nGet connected with us!\n## Overview\nThe Posti APIs provide programmatic access to read and write Store and Drop Shipping related data.\nThe Posti API identifies client applications and users using OAuth 2.0. The responses from Posti API are available in JSON.\nIn order to get started with Posti API, please refer to the tutorials in the navigation bar.\nFor list of available APIs, please refer API descriptions in the navigation bar.\n### Feedback\nIf you find any issues with the new version of the API, please send us an email to postiapisupport@posti.com.\n# Authentication\nPosti API uses OAuth 2.0 protocol for authentication and authorization. The OAuth 2.0 is a secure and standard authentication protocol that provides sending authorized requests to the Posti API services.\nThe authentication flow follows these steps:\n1. A client application uses Posti service account username and password via HTTP Basic Authentication to exchange these credentials for an access token\n2. When accessing the protected API service, the client application uses the access token to authenticate\n## How to get Posti service account\nIf your business does not have a Posti service account, contact Posti Customer Service yritysasiakaspalvelu@posti.com to get one. Note that you also need a contract with Posti. ",
+    "version": "1.0.0"
+  },
+  "host": "oauth.posti.fi",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/oauth",
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "application",
+      "tokenUrl": "https://example.com/oauth/token",
+      "scopes": {
+        "read": "Grants read access",
+        "write": "Grants write access",
+        "admin": "Grants read and write access to administrative information"
+      }
+    },
+    "Basic": {
+      "type": "basic"
+    }
+  },
+  "paths": {
+    "/token": {
+      "post": {
+        "summary": "Request Access Token",
+        "description": "### Accessing Posti API services\n**Step 1:** Encode username and password\nConcatenate the username, a colon character \":\", and the password into a single string. After that, Base64 encode the single string.\n\nCredentials:\naccountname:secret\nBase64 encoded value:\nYWNjb3VudG5hbWU6c2VjcmV0\n\n**Step 2:** Get access token from Authorization Server\nBefore your application can access Posti API services, it must obtain an access token that grants access to the services. A single access token can grant access to multiple services where you have authorization.\n\nThe value calculated in Step 1 must be exchanged for a access token by making a HTTP POST request to Authorization Server's access token endpoint. The request must include an Authorization header with the value of \"Basic <Base64 encoded value from Step 1>\". Url parameter grant_type=client_credentials must also be included to the request.\n",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "formData",
+            "description": "Value MUST be set to \"client_credentials\" as per RFC",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "client_credentials"
+            ]
+          }
+        ],
+        "tags": [
+          "Oauth2"
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorisation token (Bearer)",
+            "schema": {
+              "$ref": "#/definitions/Token"
+            },
+            "examples": {
+              "application/json": "{\n   \"access_token\":\"2YotnFZFEjr1zCsicMWpAA\",\n   \"token_type\":\"Bearer\",\n   \"expires_in\":3600,\n }"
+            }
+          },
+          "400": {
+            "description": "As per RFC authorisation server responds with 400 in case of error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": "{\n  \"error\":\"invalid_request\"\n}"
+            }
+          }
+        },
+        "security": [
+          {
+            "Basic": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Invalidate access token",
+        "tags": [
+          "Oauth2"
+        ],
+        "responses": {
+          "200": {
+            "description": "Empty body with 200 code"
+          },
+          "403": {
+            "description": "Access Token already invalidated or not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Token": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "The access token value"
+        },
+        "token_type": {
+          "type": "string",
+          "enum": [
+            "Bearer"
+          ],
+          "description": "Type of the token is set to \"Bearer\""
+        },
+        "expires_in": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The lifetime in seconds of the access token"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "enum": [
+            "invalid_request",
+            "invalid_client",
+            "invalid_grant",
+            "unauthorized_client",
+            "unsupported_grant_type"
+          ]
+        },
+        "error_description": {
+          "type": "string",
+          "description": "Human-readable text providing additional information"
+        },
+        "error_uri": {
+          "type": "string",
+          "description": "A URI identifying a human-readable web page with information about the error"
+        }
+      }
+    }
+  }
+}

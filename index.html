@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Posti SCS API Specification</title>
+  <!-- needed for adaptive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+  ReDoc uses font options from the parent element
+  So override default browser styles
+  -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .navigation_bar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #263238;;
+    }
+    .navigation_bar li {
+      float: left;
+    }
+    .navigation_bar img {
+      height : 45px;
+      margin : 10px 0;
+      padding : 0 20px;
+      border-right: 2px solid #999;
+    }
+    .navigation_bar li a {
+      display: block;
+      text-align: center;
+      color: #999;
+      text-decoration: none;
+    }
+    .navigation_bar li:last-child{
+      font-size: 1.6em;
+      margin : 15px 0;
+      padding: 0 20px;
+      display: block;
+      font-family: Book Antiqua, "sans-serif";
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="navigation_bar">
+  <ul>
+    <li><a href="https://jiivari.github.io/PostiAPI/"><img src="logo.png" /></a></li>
+    <li><a href="#">Developers</a></li>
+  </ul>
+</div>
+<redoc spec-url="./swagger.json">
+</redoc>
+<script src="//rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js"> </script>
+</body>
+</html>
